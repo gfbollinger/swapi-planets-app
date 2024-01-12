@@ -11,6 +11,7 @@ function App() {
   const [planets, setPlanets] = useState(initialPlanetsData)
   const [isLoading, setIsLoading] = useState(true)
   const [loadedPercentage, setLoadedPercentage] = useState(0)
+  const [sortOrder, setSortOrder] = useState('asc')
 
   const [geoData, setGeoData] = useState({ // state to save all types of terrains, climates, etc
     climates: [],
@@ -35,24 +36,24 @@ function App() {
         const arrangedData = data.results.map( item => { // Map data to have it organized the way is needed later (example numbers)
           // const getPlanetSize = 
           return {
-            name: item.name,
-            rotation_period: parseInt(item.rotation_period, 10),
-            orbital_period: parseInt(item.orbital_period, 10),
-            diameter: parseInt(item.diameter, 10),
+            name: item.name.toLowerCase(),
+            rotation_period: item.rotation_period === 'unknown' ? -1 : parseInt(item.rotation_period, 10),
+            orbital_period: item.orbital_period === 'unknown' ? -1 : parseInt(item.orbital_period, 10),
+            diameter: item.diameter === 'unknown' ? -1 : parseInt(item.diameter, 10),
             climate: item.climate,
             gravity: item.gravity,
             terrain: item.terrain,
-            surface_water: parseInt(item.surface_water, 10),
-            population: parseInt(item.population, 10),
+            surface_water: item.surface_water === 'unknown' ? -1 : parseInt(item.surface_water, 10),
+            population: item.population === 'unknown' ? -1 : parseInt(item.population, 10),
             residents: item.residents,
             films: item.films,
             url: item.url,
             planet_size: ''
           }
         })
-        console.log(arrangedData)
-        allPlanets = [...allPlanets, ...data.results]
-        nextPage = data.next
+        console.log(arrangedData, data.results)
+        allPlanets = [...allPlanets, ...arrangedData]
+        nextPage = data.next // Update next page with next from response
         planetsCount = data.count
         console.log(data.next)
 
@@ -143,6 +144,27 @@ function App() {
     })
   }
 
+  const sortData = (data, param, order) => {
+    const newData = [...data]
+    const newPlanetsArr = newData.sort(function(a,b) {
+      if(a[param] > b[param]){
+        return order === 'asc' ? 1 : -1
+      }
+      if (a[param] < b[param]) {
+        return order === 'asc' ? -1 : 1
+      }
+      return 0
+    })
+    return newPlanetsArr
+  }
+
+  const handleSortPlanets = (by) => {
+    const newSortOrder = sortOrder === 'asc' ? 'des' : 'asc'
+    setSortOrder(newSortOrder)
+    const sortedArr = sortData(planets, by, newSortOrder)
+    setPlanets(sortedArr)
+  }
+
   const filterPlanets = (p) => {
     let filteredData = [...p]
 
@@ -163,6 +185,12 @@ function App() {
     }
 
     return filteredData
+  }
+
+  const handleRefresh = () => {
+    setIsLoading(true)
+    setLoadedPercentage(0)
+    fetchAllPlanets()
   }
 
   const filteredPlanets = filterPlanets(planets)
@@ -213,9 +241,9 @@ function App() {
           </div>
 
           <h3>Sort by:</h3>
-          <button>Alphabetically</button>
-          <button>Diameter</button>
-          <button>Population</button>
+          <button onClick={() => handleSortPlanets('name')}>Alphabetically</button>
+          <button onClick={() => handleSortPlanets('diameter')}>Diameter</button>
+          <button onClick={() => handleSortPlanets('population')}>Population</button>
 
           <ul className='planetsList'>
               { filteredPlanets && filteredPlanets.length > 0 ? (
@@ -226,7 +254,7 @@ function App() {
                 <p>No planets known meet you criteria...</p>
               }
           </ul>
-          <button onClick={fetchAllPlanets}>Refresh</button>
+          <button onClick={handleRefresh}>Refresh</button>
         </>
       }
     </>

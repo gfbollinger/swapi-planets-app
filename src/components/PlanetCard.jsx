@@ -10,8 +10,8 @@ const PlanetCard = ({planet}) => {
       <hr />
 
       <ul className='planetDataList'>
-        <li>Population: {parseInt(planet.population, 10).toLocaleString('en-US')}</li>
-        <li>Diameter: {parseInt(planet.diameter, 10).toLocaleString('en-US')}</li>
+        <li>Population: {planet.population === -1 ? 'unknown' : planet.population.toLocaleString('en-US')}</li>
+        <li>Diameter: { planet.diameter === -1 ? 'unknown' : planet.diameter.toLocaleString('en-US')}</li>
         <li>Rotation Period: {planet.rotation_period}</li>
         <li>Orbital Period: {planet.orbital_period}</li>
       </ul>
