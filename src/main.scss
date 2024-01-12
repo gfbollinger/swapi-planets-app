@@ -1,0 +1,17 @@
+.planetsList{
+  list-style: none;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+
+  .planetCard{
+    border: 1px solid #ccc;
+    border-radius: 15px;
+    padding: 20px;
+
+    .planetDataList{
+      list-style-position: inside;
+      text-align: left;
+      padding-left: 0;
+    }
+  }
+}
