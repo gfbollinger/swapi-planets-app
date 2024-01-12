@@ -3,6 +3,8 @@ import './App.css'
 import loaderImg from './assets/images/loader.png'
 import PlanetCard from './components/PlanetCard'
 
+import { assignSize } from './assets/utils/utils'
+
 let API_URL = 'https://swapi.dev/api/planets/'
 
 function App() {
@@ -48,7 +50,7 @@ function App() {
             residents: item.residents,
             films: item.films,
             url: item.url,
-            planet_size: ''
+            planet_size: assignSize(item.diameter === 'unknown' ? -1 : parseInt(item.diameter, 10), 4) // Used just to display size representation as an image
           }
         })
         console.log(arrangedData, data.results)

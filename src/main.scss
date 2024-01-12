@@ -8,6 +8,54 @@
     border-radius: 15px;
     padding: 20px;
 
+    .planetImage-wrapper{
+      min-height: 170px;
+      display: flex;
+      align-items: center;
+
+      .planetImage{
+        background-color: #ccc;
+        border-radius: 100%;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+  
+        &.planetImage-sm{
+          width: 30px;
+          height: 30px;
+        }
+  
+        &.planetImage-md{
+          width: 60px;
+          height: 60px;
+        }
+  
+        &.planetImage-l{
+          width: 90px;
+          height: 90px;
+        }
+  
+        &.planetImage-xl{
+          width: 120px;
+          height: 120px;
+        }
+  
+        &.planetImage-xxl{
+          width: 160px;
+          height: 160px;
+        }
+  
+        &.planetImage-unknown{
+          width: 60px;
+          height: 60px;
+          background-color: transparent;
+          border: 2px solid #ccc;
+        }
+      }
+
+    }
+
     .planetDataList{
       list-style-position: inside;
       text-align: left;

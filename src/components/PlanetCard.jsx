@@ -4,6 +4,9 @@ const PlanetCard = ({planet}) => {
   return (
     <li className='planetCard'>
       <h3>{planet.name}</h3>
+      <div className="planetImage-wrapper">
+        <div className={`planetImage planetImage-${planet.planet_size}`}>{planet.planet_size}</div>
+      </div>
       <div><strong>Climate:</strong> {planet.climate}</div>
       <div><strong>Terrain:</strong> {planet.terrain}</div>
 
