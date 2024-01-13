@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react'
 import './App.css'
 import loaderImg from './assets/images/loader.png'
 import PlanetCard from './components/PlanetCard'
+import Header from './components/Header'
+import "@fontsource/inter";
 
 import { assignSize } from './assets/utils/utils'
 
@@ -189,6 +191,25 @@ function App() {
     return filteredData
   }
 
+  const removeFilter = (filter) => {
+    if (filter === 'minPopulation'){
+      setFilters(prevState => {
+        return {
+          ...prevState,
+          minPopulation: 0
+        }
+      })
+    }
+    else {
+      setFilters(prevState => {
+        return {
+          ...prevState,
+          [filter]: ''
+        }
+      })
+    }
+  }
+
   const handleRefresh = () => {
     setIsLoading(true)
     setLoadedPercentage(0)
@@ -199,64 +220,94 @@ function App() {
 
   return (
     <>
+      <Header />
       { isLoading &&
-        <>
-          <img src={loaderImg} alt="" className='loader' />
+        <div className='mainLoader'>
+          <div className="loader"><img src={loaderImg} alt="" /></div>
           <p>Travelling the galaxy gathering planets data... {loadedPercentage} %</p>
-        </>
+        </div>
       }
+
       { !isLoading &&
-
         <>
-          <h3>Filters</h3>
-          <div className="filters">
-            { geoData &&
-              <>
-                <select name="" id="" onChange={(e) => handleSelectClimate(e)}>
-                  <option value="">-- Select Climate</option>
-                  { geoData.climates.map(item => {
-                    return <option key={item} value={item}>{item}</option>
-                  }) }
-                </select>
+          <div className="filtersContainer">
+            <h3>Filter by:</h3>
+            <div className="filters">
+              { geoData &&
+                <>
+                  <div className='filterItem'>
+                    <span>Climate</span>
+                    <select onChange={(e) => handleSelectClimate(e)} value={filters.climate}>
+                      <option value="">-- Select Climate</option>
+                      { geoData.climates.map(item => {
+                        return <option key={item} value={item}>{item}</option>
+                      }) }
+                    </select>
+                  </div>
 
-                <select name="" id="" onChange={(e) => handleSelectTerrain(e)}>
-                  <option value="">-- Select Terrain</option>
-                  { geoData.terrains.map(item => {
-                    return <option key={item} value={item}>{item}</option>
-                  }) }
-                </select>
+                  <div className='filterItem'>
+                    <span>Terrain</span>
+                    <select onChange={(e) => handleSelectTerrain(e)} value={filters.terrain}>
+                      <option value="">-- Select Terrain</option>
+                      { geoData.terrains.map(item => {
+                        return <option key={item} value={item}>{item}</option>
+                      }) }
+                    </select>
+                  </div>
 
-                <div>
-                  <input
-                    type="range"
-                    min={0}
-                    max={10000000000}
-                    step="10000000"
-                    value={filters.minPopulation}
-                    style={{width: 500}}
-                    onChange={(e) => handleRangeInput(e)}
-                  />
-                  {parseInt(filters.minPopulation, 10).toLocaleString()}
-                </div>
-              </>
-            }
+                  <div className='filterItem'>
+                    <span>Min. Population</span>
+                    <input
+                      className='minPopulation'
+                      type="range"
+                      min={0}
+                      max={10000000000}
+                      step="10000000"
+                      value={filters.minPopulation}
+                      onChange={(e) => handleRangeInput(e)}
+                    />
+                    {parseInt(filters.minPopulation, 10).toLocaleString()}
+                  </div>
+                </>
+              }
+            </div>
+            <div className="filtersApplied">
+              {filters.climate || filters.terrain || filters.minPopulation ? (
+                <p>Filters Applied:</p>
+              ) : null}
+              { filters.climate &&
+                <div className="badge"><strong>Climate: </strong>{filters.climate} <button onClick={() => removeFilter('climate')}>&times;</button></div>
+              }
+
+              { filters.terrain &&
+                <div className="badge"><strong>Terrain:</strong> {filters.terrain} <button onClick={() => removeFilter('terrain')}>&times;</button></div>
+              }
+
+              { filters.minPopulation >= 1 &&
+                <div className="badge"><strong>Min pop:</strong> {filters.minPopulation.toLocaleString()} <button onClick={() => removeFilter('minPopulation')}>&times;</button></div>
+              }
+            </div>
+
+            <h3>Sort by:</h3>
+            <button onClick={() => handleSortPlanets('name')}>Alphabetically</button>
+            <button onClick={() => handleSortPlanets('diameter')}>Diameter</button>
+            <button onClick={() => handleSortPlanets('population')}>Population</button>
+
+            <div>
+              <hr />
+              <button onClick={handleRefresh}>Refresh all data</button>
+            </div>
           </div>
 
-          <h3>Sort by:</h3>
-          <button onClick={() => handleSortPlanets('name')}>Alphabetically</button>
-          <button onClick={() => handleSortPlanets('diameter')}>Diameter</button>
-          <button onClick={() => handleSortPlanets('population')}>Population</button>
-
-          <ul className='planetsList'>
-              { filteredPlanets && filteredPlanets.length > 0 ? (
-                filteredPlanets.map((planet, index) => {
-                  return <PlanetCard key={planet.name} planet={planet} />
-                })
-              ) :
-                <p>No planets known meet you criteria...</p>
-              }
-          </ul>
-          <button onClick={handleRefresh}>Refresh</button>
+          { filteredPlanets && filteredPlanets.length > 0 ? (
+            <ul className='planetsList'>
+              { filteredPlanets.map((planet, index) => {
+                return <PlanetCard key={planet.name} planet={planet} />
+              })}
+            </ul>
+          ) :
+            <p className='no-results'>No planets known meet you criteria...</p>
+          }
         </>
       }
     </>

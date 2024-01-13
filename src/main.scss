@@ -1,56 +1,261 @@
+@import"./assets/styles/reset.scss";
+
+html, button, select, p, *{
+  font-family: "Inter", sans-serif !important;
+}
+
+body{
+  margin: 0;
+  background-image: url(./assets/images/bg.jpg);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-attachment: fixed;
+}
+
+strong{
+  font-weight: 600;
+}
+
+.header{
+  .mainLogo{
+    margin-bottom: 15px;
+  }
+
+  h1{
+    color: aliceblue;
+    text-transform: uppercase;
+    font-size: 14px;
+    letter-spacing: 10px;
+    margin-bottom: 15px;
+    font-weight: 700;
+  }
+}
+
+.mainLoader{
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  position: relative;
+  margin-top: 100px;
+  height: 60vh;
+
+  .loader{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: rotateSpinner 2.5s linear infinite;
+    transform-origin: center;
+    width: 56px;
+    height: 56px;
+    position: relative;
+    margin: 0 auto;
+  }
+
+  p{
+    margin-top: 20px;
+    font-size: 20px;
+    line-height: 1.5em;
+  }
+}
+
+@keyframes rotateSpinner {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.filtersContainer{
+  background-color: rgba(0, 0, 13, 0.75);
+  border-radius: 8px;
+  color: aliceblue;
+  border: 1px solid rgba(255,255,255, .5);
+  margin-bottom: 50px;
+  padding: 20px;
+
+  h3{
+    margin-bottom: 10px;
+    font-size: 15px;
+    text-transform: uppercase;
+    text-align: left;
+  }
+
+  .filters{
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 20px;
+
+    .filterItem{
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    span{
+      font-size: 12px;
+    }
+  }
+
+  .minPopulation{
+    width: 300px;
+  }
+
+  .filtersApplied{
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+
+    .badge{
+      background-color: rgba(255,255,255, .6);
+      color: #000;
+      border-radius: 8px;
+      padding: 2px 10px;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+
+      button{
+        background-color: transparent;
+        border: 0;
+        color: #333;
+        padding: 0 3px;
+        font-size: 20px;
+        border-radius: 50%;
+        line-height: inherit;
+        margin-top: -2px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+      }
+    }
+  }
+}
+
 .planetsList{
+  padding-left: 0;
   list-style: none;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 15px;
 
   .planetCard{
     border: 1px solid #ccc;
     border-radius: 15px;
-    padding: 20px;
+    padding: 30px 20px;
+    color: #ccc;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    cursor: pointer;
+
+    &::before {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 100%;
+      height: calc(100% + 300px);
+      background: linear-gradient(90deg, black calc(30%), #b8e1f0 calc(40%), #cfe7f6 calc(60%), black calc(70%));
+      z-index: -2;
+      animation: rotate 6s linear infinite;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+    }
+    &::after {
+      content: '';
+      position: absolute;
+      left: 2px;
+      top: 2px;
+      width: calc(100% - 4px);
+      height: calc(100% - 4px);
+      border-radius: 10px;
+      background: #000;
+      z-index: -1;
+      transition: all 0.3s ease;
+    }
+    &.active,
+    &:hover {
+      border-color: #b8d8f050;
+      box-shadow: 0 0 30px #b9daec90, 0 0 2px #d3f1ee inset;
+    }
+    &.active::before,
+    &:hover::before {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .planetName{
+      text-transform: capitalize;
+      font-weight: 700;
+      color: #fff;
+      font-size: 24px;
+    }
 
     .planetImage-wrapper{
-      min-height: 170px;
+      min-height: 190px;
       display: flex;
       align-items: center;
 
       .planetImage{
-        background-color: #ccc;
+        /* background-color: #ccc; */
         border-radius: 100%;
         margin: 0 auto;
         display: flex;
         align-items: center;
         justify-content: center;
-  
+        color: #333;
+        font-size: 11px;
+        text-transform: uppercase;
+        background:
+        radial-gradient(
+          circle at 30% 30%,
+          #bbb,
+          #555
+        );
+        box-shadow: 0 0 20px rgba(197, 227, 240, 0.5);
+
         &.planetImage-sm{
           width: 30px;
           height: 30px;
         }
-  
+
         &.planetImage-md{
           width: 60px;
           height: 60px;
         }
-  
+
         &.planetImage-l{
           width: 90px;
           height: 90px;
         }
-  
+
         &.planetImage-xl{
           width: 120px;
           height: 120px;
         }
-  
+
         &.planetImage-xxl{
-          width: 160px;
-          height: 160px;
+          width: 150px;
+          height: 150px;
         }
-  
+
         &.planetImage-unknown{
-          width: 60px;
-          height: 60px;
-          background-color: transparent;
+          width: 75px;
+          height: 75px;
+          background: transparent;
           border: 2px solid #ccc;
+          color: #ccc;
         }
       }
 
@@ -62,4 +267,15 @@
       padding-left: 0;
     }
   }
+}
+
+.no-results{
+  text-align: center;
+  color: aliceblue;
+  font-size: 36px;
+}
+
+@keyframes rotate {
+  0% {transform: translate(-50%, -50%) rotate(0deg)}
+  100% {transform: translate(-50%, -50%) rotate(360deg)}
 }

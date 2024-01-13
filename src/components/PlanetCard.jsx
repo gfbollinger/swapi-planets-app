@@ -3,7 +3,7 @@ import React from 'react'
 const PlanetCard = ({planet}) => {
   return (
     <li className='planetCard'>
-      <h3>{planet.name}</h3>
+      <h3 className='planetName'>{planet.name}</h3>
       <div className="planetImage-wrapper">
         <div className={`planetImage planetImage-${planet.planet_size}`}>{planet.planet_size}</div>
       </div>
