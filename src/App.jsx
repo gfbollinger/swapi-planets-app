@@ -16,6 +16,7 @@ function App() {
   const [isLoading, setIsLoading] = useState(true)
   const [loadedPercentage, setLoadedPercentage] = useState(0)
   const [sortOrder, setSortOrder] = useState('asc')
+  const [sortSelection, setSortSelection] = useState('')
 
   const [geoData, setGeoData] = useState({ // state to save all types of terrains, climates, etc
     climates: [],
@@ -26,6 +27,7 @@ function App() {
     climate: '',
     terrain: '',
     minPopulation: 0,
+    query: ''
   })
 
   const fetchAllPlanets = async () => { // Function to fetch all planets
@@ -38,7 +40,6 @@ function App() {
         const response = await fetch(nextPage)
         const data = await response.json()
         const arrangedData = data.results.map( item => { // Map data to have it organized the way is needed later (example numbers)
-          // const getPlanetSize = 
           return {
             name: item.name.toLowerCase(),
             rotation_period: item.rotation_period === 'unknown' ? -1 : parseInt(item.rotation_period, 10),
@@ -148,6 +149,15 @@ function App() {
     })
   }
 
+  const handleSearchQuery = (e) => {
+    setFilters(prevState => {
+      return {
+        ...prevState,
+        query: e.target.value
+      }
+    })
+  }
+
   const sortData = (data, param, order) => {
     const newData = [...data]
     const newPlanetsArr = newData.sort(function(a,b) {
@@ -167,6 +177,7 @@ function App() {
     setSortOrder(newSortOrder)
     const sortedArr = sortData(planets, by, newSortOrder)
     setPlanets(sortedArr)
+    setSortSelection(by)
   }
 
   const filterPlanets = (p) => {
@@ -181,10 +192,15 @@ function App() {
     }
 
     if(filters.minPopulation){
-      filteredData = filteredData.filter(item => parseInt(item.population, 10) > parseInt(filters.minPopulation, 10)) // TODO: Map data once planets fetched to avoid parding it later
+      filteredData = filteredData.filter(item => parseInt(item.population, 10) > parseInt(filters.minPopulation, 10))
     }
 
-    if(!filters.climate && !filters.terrain  && !filters.minPopulation){
+    if(filters.query){
+      const query = filters.query.toLowerCase()
+      filteredData = filteredData.filter(item => item.name.toLowerCase().includes(query) )
+    }
+
+    if(!filters.climate && !filters.terrain  && !filters.minPopulation && !filters.query){
       return planets
     }
 
@@ -266,7 +282,7 @@ function App() {
                       value={filters.minPopulation}
                       onChange={(e) => handleRangeInput(e)}
                     />
-                    {parseInt(filters.minPopulation, 10).toLocaleString()}
+                    <div className="minPopulationLabel">{filters.minPopulation.toLocaleString()}</div>
                   </div>
                 </>
               }
@@ -288,13 +304,32 @@ function App() {
               }
             </div>
 
-            <h3>Sort by:</h3>
-            <button onClick={() => handleSortPlanets('name')}>Alphabetically</button>
-            <button onClick={() => handleSortPlanets('diameter')}>Diameter</button>
-            <button onClick={() => handleSortPlanets('population')}>Population</button>
+            <div className="searchSortContainer">
+              <div className="searchControls">
+                <h3>Search</h3>
+                <div className="filterItem">
+                  <label htmlFor="searchQuery">Search</label>
+                  <input
+                    type="text"
+                    id='searchQuery'
+                    value={filters.query}
+                    onChange={(e) => handleSearchQuery(e)}
+                    placeholder='Type the planet name...'
+                  />
+                </div>
+              </div>
 
-            <div>
-              <hr />
+              <div className="sortBy-controls">
+                <h3>Sort by:</h3>
+                <div className="sortBy-buttons">
+                  <button onClick={() => handleSortPlanets('name')} className={sortSelection === 'name' ? 'active' : ''}>Alphabetically</button>
+                  <button onClick={() => handleSortPlanets('diameter')} className={sortSelection === 'diameter' ? 'active' : ''}>Diameter</button>
+                  <button onClick={() => handleSortPlanets('population')} className={sortSelection === 'population' ? 'active' : ''}>Population</button>
+                </div>
+              </div>
+            </div>
+
+            <div className='refreshContainer'>
               <button onClick={handleRefresh}>Refresh all data</button>
             </div>
           </div>
