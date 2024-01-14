@@ -350,7 +350,7 @@ function App() {
               })}
             </ul>
           ) :
-            <p className='no-results'>No planets in this database meet you criteria...</p>
+            <p className='no-results'>No planets in this database meet your criteria...</p>
           }
         </>
       }
