@@ -161,13 +161,22 @@ function App() {
   const sortData = (data, param, order) => {
     const newData = [...data]
     const newPlanetsArr = newData.sort(function(a,b) {
-      if(a[param] > b[param]){
-        return order === 'asc' ? 1 : -1
+      // Move to the end elems that has -1 val (items with unknown value)
+      if (a[param] === -1 || a[param] === 0) {
+        return 1;
+      }
+      if (b[param] === -1 || b[param] === 0) {
+          return -1;
+      }
+
+      // Compare other values
+      if (a[param] > b[param]) {
+          return order === 'asc' ? 1 : -1;
       }
       if (a[param] < b[param]) {
-        return order === 'asc' ? -1 : 1
+          return order === 'asc' ? -1 : 1;
       }
-      return 0
+      return 0;
     })
     return newPlanetsArr
   }
@@ -341,7 +350,7 @@ function App() {
               })}
             </ul>
           ) :
-            <p className='no-results'>No planets known meet you criteria...</p>
+            <p className='no-results'>No planets in this database meet you criteria...</p>
           }
         </>
       }
