@@ -282,16 +282,18 @@ function App() {
 
                   <div className='filterItem'>
                     <span>Min. Population</span>
-                    <input
-                      className='minPopulation'
-                      type="range"
-                      min={0}
-                      max={10000000000}
-                      step="10000000"
-                      value={filters.minPopulation}
-                      onChange={(e) => handleRangeInput(e)}
-                    />
-                    <div className="minPopulationLabel">{filters.minPopulation.toLocaleString()}</div>
+                    <div className="minPopulationGroup">
+                      <input
+                        className='minPopulation'
+                        type="range"
+                        min={0}
+                        max={10000000000}
+                        step="10000000"
+                        value={filters.minPopulation}
+                        onChange={(e) => handleRangeInput(e)}
+                      />
+                      <div className="minPopulationLabel">{filters.minPopulation.toLocaleString()}</div>
+                    </div>
                   </div>
                 </>
               }
@@ -315,7 +317,7 @@ function App() {
 
             <div className="searchSortContainer">
               <div className="searchControls">
-                <h3>Search</h3>
+                <h3>Search:</h3>
                 <div className="filterItem">
                   <label htmlFor="searchQuery">Search</label>
                   <input

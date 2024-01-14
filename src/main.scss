@@ -91,18 +91,11 @@ strong{
     align-items: center;
     justify-content: flex-start;
     gap: 20px;
+    flex-direction: column;
+    align-items: flex-start;
 
-    .filterItem{
-      display: flex;
-      align-items: center;
-      gap: 10px;
-
-      select{
-        /* color: #fff;
-        background-color: transparent;
-        border: 0;
-        border-bottom: 1px solid #fff; */
-      }
+    @media (min-width:768px){
+      flex-direction: row;
     }
 
     span{
@@ -110,8 +103,12 @@ strong{
     }
   }
 
-  .minPopulation{
-    width: 200px;
+  .minPopulationGroup{
+    width: 100%;
+
+    .minPopulation{
+      width: 100%;
+    }
   }
 
   .minPopulationLabel{
@@ -124,9 +121,10 @@ strong{
     align-items: center;
     gap: 5px;
     font-size: 14px;
+    flex-wrap: wrap;
 
     .badge{
-      background-color: rgba(255,255,255, .6);
+      background-color: rgba(206, 168, 63, 0.9);
       color: #000;
       border-radius: 8px;
       padding: 2px 10px;
@@ -153,15 +151,50 @@ strong{
   }
 }
 
+.filterItem{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+
+  select, input[type='text']{
+    color: #000;
+    background-color: #ccc;
+    border-radius: 8px;
+    border: 0;
+    padding: 4px 10px;
+    text-transform: capitalize;
+    width: 100%;
+
+    option{
+      color: #000;
+    }
+  }
+
+  input[type='text']{
+    padding: 7px 10px;
+  }
+
+  label{
+    font-size: 12px;
+  }
+}
+
 .searchSortContainer{
   display: flex;
   border-top: 1px solid #ccc;
   border-bottom: 1px solid #ccc;
   margin: 20px 0;
   padding: 20px 0;
-  gap: 60px;
+  gap: 20px;
+  flex-direction: column;
 
-  .filterItem{
+  @media (min-width:768px) {
+    flex-direction: row;
+    gap: 60px;
+  }
+
+  /* .filterItem{
     display: flex;
     gap: 10px;
     align-items:center ;
@@ -169,7 +202,7 @@ strong{
     label{
       font-size: 12px;
     }
-  }
+  } */
 }
 
 .sortBy-controls{
@@ -179,6 +212,7 @@ strong{
     align-items: center;
     justify-content: flex-start;
     gap: 10px;
+    flex-wrap: wrap;
 
     button{
       background-color: rgba(0, 0, 13, 0.5);
@@ -212,8 +246,20 @@ strong{
   padding-left: 0;
   list-style: none;
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-columns: 1fr;
   gap: 15px;
+
+  @media (min-width: 640px) {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  @media (min-width: 768px) {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+
+  @media (min-width: 	1024px) {
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+  }
 
   .planetCard{
     border: 1px solid #ccc;
