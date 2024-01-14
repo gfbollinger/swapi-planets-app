@@ -348,7 +348,7 @@ function App() {
           { filteredPlanets && filteredPlanets.length > 0 ? (
             <ul className='planetsList'>
               { filteredPlanets.map((planet, index) => {
-                return <PlanetCard key={planet.name} planet={planet} />
+                return <PlanetCard key={planet.name} planet={planet} sortSelection={sortSelection} />
               })}
             </ul>
           ) :
