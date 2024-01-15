@@ -1,7 +1,7 @@
 import React, {useContext} from 'react'
 import {FiltersContext} from '../context/filters'
 
-const Filters = ({planets, setPlanets}) => {
+const Filters = ({planets, setPlanets, setIsLoading, setLoadedPercentage, fetchAllPlanets}) => {
   const {filters, setFilters, sortOrder, setSortOrder, sortSelection, setSortSelection, geoData, setGeoData} = useContext(FiltersContext)
 
   const handleSelectTerrain = (e) => {

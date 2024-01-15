@@ -61,7 +61,6 @@ function App() {
       setPlanets(allPlanets)
       setIsLoading(false)
 
-
     } catch (error) {
       console.error('Error fetching planets:', error)
     }
@@ -113,6 +112,10 @@ function App() {
     })
   }
 
+  useEffect(() => {
+    mapGeoData()
+  },[planets])
+
   const filterPlanets = (p) => {
     let filteredData = [...p]
 
@@ -154,7 +157,7 @@ function App() {
 
       { !isLoading &&
         <>
-          <Filters planets={planets} setPlanets={setPlanets} />
+          <Filters planets={planets} setPlanets={setPlanets} setIsLoading={setIsLoading} setLoadedPercentage={setLoadedPercentage} fetchAllPlanets={fetchAllPlanets} />
 
           { filteredPlanets && filteredPlanets.length > 0 ? (
             <ul className='planetsList'>
