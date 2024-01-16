@@ -301,6 +301,16 @@ strong{
     &:hover {
       border-color: #b8d8f050;
       box-shadow: 0 0 30px #b9daec90, 0 0 2px #d3f1ee inset;
+      color: #fff;
+
+      .planetName{
+        color: #fff;
+        transform: scale(105%);
+      }
+
+      .planetImage{
+        transform: scale(105%);
+      }
     }
     &.active::before,
     &:hover::before {
@@ -313,6 +323,7 @@ strong{
       font-weight: 700;
       color: #ccc;
       font-size: 24px;
+      transition: all 0.3s ease;
 
       &.highlight{
         color: #fff;
@@ -333,7 +344,9 @@ strong{
         justify-content: center;
         color: #333;
         font-size: 11px;
+        line-height: 1.3em;
         text-transform: uppercase;
+        transition: all 0.3s ease;
         background:
         radial-gradient(
           circle at 30% 30%,
@@ -378,6 +391,12 @@ strong{
 
     }
 
+    .planetMainData{
+      div{
+        padding: 3px 0;
+      }
+    }
+
     .planetDataList{
       list-style-position: inside;
       text-align: left;
@@ -411,5 +430,6 @@ strong{
   100% {transform: translate(-50%, -50%) rotate(360deg)}
 }
 
-
-
+.uppercase{
+  text-transform: uppercase;
+}

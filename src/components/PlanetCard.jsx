@@ -5,10 +5,12 @@ const PlanetCard = ({planet, sortSelection}) => {
     <li className='planetCard'>
       <h3 className={sortSelection === 'name' ? 'highlight planetName' : 'planetName'}>{planet.name}</h3>
       <div className="planetImage-wrapper">
-        <div className={`planetImage planetImage-${planet.planet_size}`}>{planet.planet_size}</div>
+        <div className={`planetImage planetImage-${planet.planet_size}`}>{planet.planet_size === 'unknown' || planet.planet_size === 0 ? 'unkown size' : ''}</div>
       </div>
-      <div><strong>Climate:</strong> {planet.climate}</div>
-      <div><strong>Terrain:</strong> {planet.terrain}</div>
+      <div className="planetMainData">
+        <div><strong>Climate:</strong> {planet.climate}.</div>
+        <div><strong>Terrain:</strong> {planet.terrain}.</div>
+      </div>
 
       <hr />
 
